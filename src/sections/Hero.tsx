@@ -116,7 +116,7 @@ void main() {
   vec4 baseColor = mix(img1Color, chromImg2, revealFactor);
   vec4 borderColor = vec4(1.0, 1.0, 1.0, 1.0);
   vec4 finalColor = mix(baseColor, borderColor, borderMask * 0.4);
-  finalColor.rgb *= 1.0 - (uProgress * 0.2);
+  finalColor.rgb *= 1.0;
   gl_FragColor = finalColor;
 }
 `;
