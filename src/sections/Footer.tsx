@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Instagram } from 'lucide-react'; // Ensure lucide-react is installed
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -87,7 +88,7 @@ export default function Footer() {
               {['Ana Sayfa', 'Ürünler', 'Hakkımızda', 'İletişim'].map((item) => (
                 <li key={item} style={{ marginBottom: '8px' }}>
                   <a
-                    href="#"
+                    href={`#${item.toLowerCase().replace(' ', '')}`}
                     className="font-sans"
                     data-cursor="expand"
                     style={{
@@ -129,7 +130,7 @@ export default function Footer() {
               {['Kişiye Özel Tişört', 'Baskılı Kupa', 'Fotoğraf Baskısı'].map((item) => (
                 <li key={item} style={{ marginBottom: '8px' }}>
                   <a
-                    href="#"
+                    href="#urunler"
                     className="font-sans"
                     data-cursor="expand"
                     style={{
@@ -177,6 +178,7 @@ export default function Footer() {
                 color: '#6B6B6B',
                 textDecoration: 'none',
                 transition: 'color 0.3s',
+                display: 'block'
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLAnchorElement).style.color = '#F5F3EE';
@@ -210,41 +212,42 @@ export default function Footer() {
               color: '#6B6B6B',
             }}
           >
-            2026 MONOWEAR BASKI EVİ. Tüm hakları saklıdır.
+            © 2026 MONOWEAR BASKI EVİ. Tüm hakları saklıdır.
           </p>
+          
           <div style={{ display: 'flex', gap: '12px' }}>
-            {['Instagram', 'X', 'Facebook'].map((social) => (
-              <a
-                key={social}
-                href="#"
-                data-cursor="expand"
-                aria-label={social}
-                className="flex items-center justify-center"
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  color: '#6B6B6B',
-                  textDecoration: 'none',
-                  fontSize: '0.7rem',
-                  fontWeight: 500,
-                  transition: 'border-color 0.3s, color 0.3s',
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget;
-                  el.style.borderColor = '#FF3B5C';
-                  el.style.color = '#F5F3EE';
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget;
-                  el.style.borderColor = 'rgba(255,255,255,0.15)';
-                  el.style.color = '#6B6B6B';
-                }}
-              >
-                {social === 'Instagram' ? 'Ig' : social === 'Facebook' ? 'Fb' : 'X'}
-              </a>
-            ))}
+            {/* Instagram Button */}
+            <a
+              href="https://www.instagram.com/monowearstudio/"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="expand"
+              aria-label="Instagram"
+              className="flex items-center justify-center"
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                border: '1px solid rgba(255,255,255,0.15)',
+                color: '#6B6B6B',
+                textDecoration: 'none',
+                transition: 'all 0.3s',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget;
+                el.style.borderColor = '#FF3B5C';
+                el.style.color = '#F5F3EE';
+                el.style.transform = 'scale(1.1)';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget;
+                el.style.borderColor = 'rgba(255,255,255,0.15)';
+                el.style.color = '#6B6B6B';
+                el.style.transform = 'scale(1)';
+              }}
+            >
+              <Instagram size={18} />
+            </a>
           </div>
         </div>
       </div>
