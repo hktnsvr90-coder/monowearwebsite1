@@ -65,6 +65,10 @@ float cnoise(vec2 P) {
   return 2.3 * n_xy;
 }
 
+float getBrightness(vec3 color) {
+  return dot(color, vec3(0.299, 0.587, 0.114));
+}
+
 void main() {
   vec2 uv = vUv;
   uv.x *= uResolution.x / uResolution.y;
@@ -90,3 +94,182 @@ void main() {
   float revealEdge = transitionPos - centerDist;
   float revealFactor = smoothstep(0.0, revealWidth, revealEdge);
   revealFactor = clamp(revealFactor, 0.0, 1.0);
+  float depthSample = texture2D(uImage2, vUv).r;
+  if (uTransitionComplete > 0.01) {
+    float depthValue = depthSample * 2.0 - 1.0;
+    float focalPlane = 0.0;
+    float coc = abs(depthValue - focalPlane);
+    float dofAmount = uTransitionComplete * 0.15;
+    float dofOffset = coc * dofAmount;
+    vec4 dofSample1 = texture2D(uImage2, vUv + vec2(dofOffset, 0.0));
+    vec4 dofSample2 = texture2D(uImage2, vUv - vec2(dofOffset, 0.0));
+    vec4 dofSample3 = texture2D(uImage2, vUv + vec2(0.0, dofOffset));
+    vec4 dofSample4 = texture2D(uImage2, vUv - vec2(0.0, dofOffset));
+    vec4 dofSample5 = texture2D(uImage2, vUv + vec2(dofOffset * 0.5, dofOffset * 0.5));
+    vec4 dofAvg = (img2Color + dofSample1 + dofSample2 + dofSample3 + dofSample4 + dofSample5) / 6.0;
+    img2Color = mix(dofAvg, img2Color, 0.5);
+  }
+  float borderWidth = 0.05;
+  float borderMask = smoothstep(0.0, borderWidth, revealEdge) * smoothstep(0.0, borderWidth, revealWidth - revealEdge);
+  borderMask = clamp(borderMask, 0.0, 1.0);
+  borderMask *= chromIntensity;
+  vec4 baseColor = mix(img1Color, chromImg2, revealFactor);
+  vec4 borderColor = vec4(1.0, 1.0, 1.0, 1.0);
+  vec4 finalColor = mix(baseColor, borderColor, borderMask * 0.4);
+  finalColor.rgb *= 1.0 - (uProgress * 0.2);
+  gl_FragColor = finalColor;
+}
+`;
+
+export default function Hero() {
+  const canvasContainerRef = useRef<HTMLDivElement>(null);
+  const heroTextRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef(0);
+
+  useEffect(() => {
+    const canvasContainer = canvasContainerRef.current;
+    if (!canvasContainer) return;
+
+    const canvasEl = document.createElement('canvas');
+    canvasEl.style.position = 'fixed';
+    canvasEl.style.top = '0';
+    canvasEl.style.left = '0';
+    canvasEl.style.width = '100%';
+    canvasEl.style.height = '100%';
+    canvasEl.style.zIndex = '0';
+    canvasContainer.appendChild(canvasEl);
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: false, alpha: false });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const scene = new THREE.Scene();
+
+    const textureLoader = new THREE.TextureLoader();
+    const uniforms = {
+      uProgress: { value: 0.0 },
+      uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+      uTime: { value: 0.0 },
+      uImage1: { value: textureLoader.load('/img-1.jpg') },
+      uImage2: { value: textureLoader.load('/img-2.jpg') },
+      uTransitionComplete: { value: 0.0 },
+    };
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms,
+    });
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const clock = new THREE.Clock();
+    let animationFrameId: number;
+
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      material.uniforms.uTime.value = clock.getElapsedTime();
+      material.uniforms.uTransitionComplete.value = THREE.MathUtils.smoothstep(
+        material.uniforms.uProgress.value,
+        0.7,
+        1.0
+      );
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      renderer.setSize(w, h);
+      material.uniforms.uResolution.value.set(w, h);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      renderer.dispose();
+      geometry.dispose();
+      material.dispose();
+      window.removeEventListener('resize', handleResize);
+      if (canvasContainer.contains(canvasEl)) {
+        canvasContainer.removeChild(canvasEl);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollContainer = document.getElementById('hero-scroll-container');
+      if (!scrollContainer) return;
+      const rect = scrollContainer.getBoundingClientRect();
+      const scrollY = -rect.top;
+      const maxScroll = scrollContainer.offsetHeight - window.innerHeight;
+      const progress = Math.max(0, Math.min(scrollY / maxScroll, 1.0));
+      progressRef.current = progress;
+
+      if (heroTextRef.current) {
+        const textOpacity = Math.max(0, 1 - ((progress - 0.65) / 0.2));
+        heroTextRef.current.style.opacity = String(textOpacity);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <>
+      <div ref={canvasContainerRef} />
+      <div id="hero-scroll-container" style={{ height: '300vh', position: 'relative' }}>
+        <div
+          style={{
+            position: 'sticky',
+            top: 0,
+            height: '100vh',
+            zIndex: 1,
+            display: 'flex',
+            alignItems: 'flex-end',
+            padding: '0 clamp(24px, 5vw, 64px)',
+            paddingBottom: '12vh',
+          }}
+        >
+          <div ref={heroTextRef} style={{ width: '55%', maxWidth: '700px' }}>
+            <h1
+              className="font-serif"
+              style={{
+                fontWeight: 700,
+                fontSize: 'clamp(3rem, 8vw, 7rem)',
+                letterSpacing: '-0.02em',
+                lineHeight: 0.95,
+                color: '#1A1A1A',
+                textShadow: '0 2px 30px rgba(245,243,238,0.9)',
+                margin: 0,
+              }}
+            >
+              Tarzını Yarat
+            </h1>
+            <p
+              className="font-sans"
+              style={{
+                fontWeight: 400,
+                fontSize: '1.1rem',
+                lineHeight: 1.7,
+                letterSpacing: '0.01em',
+                color: '#6B6B6B',
+                marginTop: '24px',
+                maxWidth: '440px',
+              }}
+            >
+              Kişiye özel tişört, baskılı kupa ve albümlük fotoğraf baskısı.
+              Tasarla, biz basalım.
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
