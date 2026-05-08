@@ -215,42 +215,20 @@ export default function Footer() {
             © 2026 MONOWEAR BASKI EVİ. Tüm hakları saklıdır.
           </p>
           
-          <div style={{ display: 'flex', gap: '12px' }}>
-            {/* Instagram Button */}
-            <a
-              href="https://www.instagram.com/monowearstudio/"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="expand"
-              aria-label="Instagram"
-              className="flex items-center justify-center"
-              style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                border: '1px solid rgba(255,255,255,0.15)',
-                color: '#6B6B6B',
-                textDecoration: 'none',
-                transition: 'all 0.3s',
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget;
-                el.style.borderColor = '#FF3B5C';
-                el.style.color = '#F5F3EE';
-                el.style.transform = 'scale(1.1)';
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget;
-                el.style.borderColor = 'rgba(255,255,255,0.15)';
-                el.style.color = '#6B6B6B';
-                el.style.transform = 'scale(1)';
-              }}
-            >
-              <Instagram size={18} />
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
+         <a
+  href="https://www.instagram.com/monowearstudio/"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    color: '#FF3B5C', /* This makes it a bright reddish-pink */
+    textDecoration: 'none',
+    fontWeight: 'bold',
+    fontSize: '1rem'
+  }}
+>
+  <Instagram size={20} />
+  <span>INSTAGRAM'DA TAKİP ET</span>
+</a>
