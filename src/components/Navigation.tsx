@@ -46,7 +46,7 @@ export default function Navigation({ lenisRef }: NavigationProps) {
           color: '#1A1A1A',
         }}
       >
-        TÜRK BASKI EVI
+        MONOWEAR STUDIO BASKI EVİ
       </div>
       <div className="hidden md:flex items-center" style={{ gap: '32px' }}>
         {[
