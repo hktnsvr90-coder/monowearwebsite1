@@ -170,10 +170,8 @@ export default function Hero() {
     let animationFrameId: number;
 
     const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      material.uniforms.uTime.value = clock.getElapsedTime();
-      material.uniforms.uTransitionComplete.value = THREE.MathUtils.smoothstep(
-        material.uniforms.uProgress.value,
+  animationFrameId = requestAnimationFrame(animate);
+  material.uniforms.uProgress.value = progressRef.current;
         0.7,
         1.0
       );
