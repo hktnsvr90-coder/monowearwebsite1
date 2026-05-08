@@ -54,7 +54,7 @@ export default function Footer() {
                 color: '#F5F3EE',
               }}
             >
-              TÜRK BASKI EVI
+              MONOWEAR BASKI EVİ
             </p>
             <p
               className="font-sans"
