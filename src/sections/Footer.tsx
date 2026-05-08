@@ -33,16 +33,17 @@ export default function Footer() {
     <footer
       id="iletisim"
       ref={footerRef}
-      className="w-full py-20 px-6 md:px-16"
+      className="w-full pb-20 px-6 md:px-16"
       style={{
         background: '#FFFFFF',
         borderTop: '1px solid #E5E5E5',
+        paddingTop: '40px', // Üst boşluğu azalttık (Butonu yukarı çektik)
       }}
     >
       <div className="max-w-7xl mx-auto">
         
-        {/* WHATSAPP SİPARİŞ BUTONU (ORTADA) */}
-        <div className="flex justify-center mb-20 footer-col">
+        {/* TEK WHATSAPP SİPARİŞ BUTONU */}
+        <div className="flex justify-center mb-16 footer-col">
           <a 
             href="https://wa.me/905525767284?text=Merhaba,%20sipariş%20vermek%20istiyorum." 
             target="_blank" 
