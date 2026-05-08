@@ -210,7 +210,7 @@ export default function Footer() {
               color: '#6B6B6B',
             }}
           >
-            2025 Türk Baskı Evi. Tüm hakları saklıdır.
+            2026 MONOWEAR BASKI EVİ. Tüm hakları saklıdır.
           </p>
           <div style={{ display: 'flex', gap: '12px' }}>
             {['Instagram', 'X', 'Facebook'].map((social) => (
