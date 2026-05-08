@@ -168,7 +168,7 @@ export default function Footer() {
               İletişim
             </p>
             <a
-              href="mailto:info@turkbaskievi.com"
+              href="mailto:monowearstudiobusiness@gmail.com"
               className="font-sans"
               data-cursor="expand"
               style={{
