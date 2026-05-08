@@ -65,10 +65,6 @@ float cnoise(vec2 P) {
   return 2.3 * n_xy;
 }
 
-float getBrightness(vec3 color) {
-  return dot(color, vec3(0.299, 0.587, 0.114));
-}
-
 void main() {
   vec2 uv = vUv;
   uv.x *= uResolution.x / uResolution.y;
@@ -94,29 +90,19 @@ void main() {
   float revealEdge = transitionPos - centerDist;
   float revealFactor = smoothstep(0.0, revealWidth, revealEdge);
   revealFactor = clamp(revealFactor, 0.0, 1.0);
-  float depthSample = texture2D(uImage2, vUv).r;
-  if (uTransitionComplete > 0.01) {
-    float depthValue = depthSample * 2.0 - 1.0;
-    float focalPlane = 0.0;
-    float coc = abs(depthValue - focalPlane);
-    float dofAmount = uTransitionComplete * 0.15;
-    float dofOffset = coc * dofAmount;
-    vec4 dofSample1 = texture2D(uImage2, vUv + vec2(dofOffset, 0.0));
-    vec4 dofSample2 = texture2D(uImage2, vUv - vec2(dofOffset, 0.0));
-    vec4 dofSample3 = texture2D(uImage2, vUv + vec2(0.0, dofOffset));
-    vec4 dofSample4 = texture2D(uImage2, vUv - vec2(0.0, dofOffset));
-    vec4 dofSample5 = texture2D(uImage2, vUv + vec2(dofOffset * 0.5, dofOffset * 0.5));
-    vec4 dofAvg = (img2Color + dofSample1 + dofSample2 + dofSample3 + dofSample4 + dofSample5) / 6.0;
-    img2Color = mix(dofAvg, img2Color, 0.5);
-  }
-  float borderWidth = 0.05;
-  float borderMask = smoothstep(0.0, borderWidth, revealEdge) * smoothstep(0.0, borderWidth, revealWidth - revealEdge);
-  borderMask = clamp(borderMask, 0.0, 1.0);
-  borderMask *= chromIntensity;
+  
   vec4 baseColor = mix(img1Color, chromImg2, revealFactor);
   vec4 borderColor = vec4(1.0, 1.0, 1.0, 1.0);
+  
+  float borderWidth = 0.05;
+  float borderMask = smoothstep(0.0, borderWidth, revealEdge) * smoothstep(0.0, borderWidth, revealWidth - revealEdge);
+  borderMask = clamp(borderMask, 0.0, 1.0) * chromIntensity;
+  
   vec4 finalColor = mix(baseColor, borderColor, borderMask * 0.4);
-  finalColor.rgb *= 1.0 - (uProgress * 0.2);
+  
+  // SUÇLU BURADA DÜZELTİLDİ: Artık uProgress ile çarpmıyoruz, kararma yok.
+  finalColor.rgb *= 1.0; 
+  
   gl_FragColor = finalColor;
 }
 `;
@@ -139,9 +125,10 @@ export default function Hero() {
     canvasEl.style.zIndex = '0';
     canvasContainer.appendChild(canvasEl);
 
-    const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: false, alpha: false });
+    const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: false, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0xffffff, 1);
 
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const scene = new THREE.Scene();
@@ -171,9 +158,13 @@ export default function Hero() {
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+      
+      // EKSİK SATIR EKLENDİ: Scroll değerini shadere gönderiyoruz.
+      material.uniforms.uProgress.value = progressRef.current; 
+      
       material.uniforms.uTime.value = clock.getElapsedTime();
       material.uniforms.uTransitionComplete.value = THREE.MathUtils.smoothstep(
-        material.uniforms.uProgress.value,
+        progressRef.current,
         0.7,
         1.0
       );
@@ -246,7 +237,7 @@ export default function Hero() {
                 letterSpacing: '-0.02em',
                 lineHeight: 0.95,
                 color: '#1A1A1A',
-                textShadow: '0 2px 30px rgba(245,243,238,0.9)',
+                textShadow: 'none', // Blurlu gölge kaldırıldı
                 margin: 0,
               }}
             >
@@ -259,7 +250,7 @@ export default function Hero() {
                 fontSize: '1.1rem',
                 lineHeight: 1.7,
                 letterSpacing: '0.01em',
-                color: '#6B6B6B',
+                color: '#4A4A4A',
                 marginTop: '24px',
                 maxWidth: '440px',
               }}
