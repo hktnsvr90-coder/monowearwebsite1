@@ -48,7 +48,7 @@ export default function Footer() {
               MONO WEAR
             </h3>
             <p className="text-[#6B6B6B] text-sm leading-relaxed max-w-xs">
-              Kişiye özel baskı çözümlerinde 15 yıllık tecrübe ile tarzınızı yansıtıyoruz. 
+              Kişiye özel baskı ile tarzınızı yansıtıyoruz. 
               Tişört, kupa ve fotoğraf baskısında kalite.
             </p>
           </div>
