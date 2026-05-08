@@ -185,7 +185,7 @@ export default function Footer() {
                 (e.currentTarget as HTMLAnchorElement).style.color = '#6B6B6B';
               }}
             >
-              monowearstudiobusiness@gmail.com
+              BİZE E-MAIL ÜZERİNDEN ULAŞMAK İÇİN TIKLA!
             </a>
           </div>
         </div>
