@@ -113,7 +113,7 @@ export default function About() {
               marginBottom: '24px',
             }}
           >
-            Dijital Baskıda 15 Yıllık Tecrübe
+            Dijital Baskı'da takdirinize layik olmak en büyük hedefimiz!
           </h2>
           <p
             className="font-sans"
@@ -124,7 +124,7 @@ export default function About() {
               lineHeight: 1.8,
             }}
           >
-            Türk Baskı Evi olarak 2009'dan beri kişiye özel baskı ürünleri üretiyoruz.
+            Küçük bir işletme olarak özel baskı ürünleri üretiyoruz.
             Yüksek kaliteli malzemeler, dayanıklı mürekkepler ve özenli işçilikle
             her siparişe ayrı bir özenle yaklaşıyoruz.
           </p>
