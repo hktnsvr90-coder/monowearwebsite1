@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Instagram } from 'lucide-react'; // Ensure lucide-react is installed
+import { Instagram, Mail, MapPin } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,12 +17,11 @@ export default function Footer() {
         y: 20,
         opacity: 0,
         duration: 0.6,
-        stagger: 0.08,
-        ease: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+        stagger: 0.1,
+        ease: 'power2.out',
         scrollTrigger: {
           trigger: footer,
-          start: 'top 90%',
-          toggleActions: 'play none none none',
+          start: 'top 95%',
         },
       });
     }, footer);
@@ -34,201 +33,85 @@ export default function Footer() {
     <footer
       id="iletisim"
       ref={footerRef}
+      className="w-full py-20 px-6 md:px-16"
       style={{
-        background: '#1A1A1A',
-        padding: '80px clamp(24px, 5vw, 64px) 40px',
+        background: '#FFFFFF', // FORCED WHITE BACKGROUND
+        borderTop: '1px solid #E5E5E5',
       }}
     >
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-          style={{ gap: '40px' }}
-        >
-          <div className="footer-col" style={{ gridColumn: 'span 1' }}>
-            <p
-              className="font-sans"
-              style={{
-                fontWeight: 500,
-                fontSize: '0.75rem',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#F5F3EE',
-              }}
-            >
-              MONOWEAR BASKI EVİ
-            </p>
-            <p
-              className="font-sans"
-              style={{
-                fontWeight: 400,
-                fontSize: '0.85rem',
-                color: '#6B6B6B',
-                marginTop: '8px',
-              }}
-            >
-              Kişiye özel baskı ürünleri
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          
+          {/* Brand Column */}
+          <div className="footer-col">
+            <h3 className="font-serif text-2xl font-bold text-[#1A1A1A] mb-4">
+              MONO WEAR
+            </h3>
+            <p className="text-[#6B6B6B] text-sm leading-relaxed max-w-xs">
+              Kişiye özel baskı çözümlerinde 15 yıllık tecrübe ile tarzınızı yansıtıyoruz. 
+              Tişört, kupa ve fotoğraf baskısında kalite.
             </p>
           </div>
 
+          {/* Social & Contact Column */}
           <div className="footer-col">
-            <p
-              className="font-sans"
-              style={{
-                fontWeight: 500,
-                fontSize: '0.75rem',
-                color: '#F5F3EE',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                marginBottom: '16px',
-              }}
-            >
-              Sayfalar
-            </p>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {['Ana Sayfa', 'Ürünler', 'Hakkımızda', 'İletişim'].map((item) => (
-                <li key={item} style={{ marginBottom: '8px' }}>
-                  <a
-                    href={`#${item.toLowerCase().replace(' ', '')}`}
-                    className="font-sans"
-                    data-cursor="expand"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: '0.85rem',
-                      color: '#6B6B6B',
-                      textDecoration: 'none',
-                      transition: 'color 0.3s',
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.color = '#F5F3EE';
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.color = '#6B6B6B';
-                    }}
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-[#1A1A1A] mb-6">
+              BİZE ULAŞIN
+            </h4>
+            <div className="flex flex-col gap-4">
+              {/* INSTAGRAM BUTTON */}
+              <a
+                href="https://www.instagram.com/monowearstudio/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-[#1A1A1A] hover:text-[#FF3B5C] transition-all group"
+              >
+                <div className="p-2 rounded-full border border-gray-200 group-hover:border-[#FF3B5C]">
+                  <Instagram size={20} />
+                </div>
+                <span className="font-medium text-sm">@monowearstudio</span>
+              </a>
+
+              {/* EMAIL BUTTON */}
+              <a
+                href="mailto:monowearstudiobusiness@gmail.com"
+                className="flex items-center gap-3 text-[#1A1A1A] hover:text-blue-500 transition-all group"
+              >
+                <div className="p-2 rounded-full border border-gray-200 group-hover:border-blue-500">
+                  <Mail size={20} />
+                </div>
+                <span className="font-medium text-sm text-wrap">Email Gönder</span>
+              </a>
+            </div>
           </div>
 
+          {/* Location Column */}
           <div className="footer-col">
-            <p
-              className="font-sans"
-              style={{
-                fontWeight: 500,
-                fontSize: '0.75rem',
-                color: '#F5F3EE',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                marginBottom: '16px',
-              }}
-            >
-              Ürünler
-            </p>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {['Kişiye Özel Tişört', 'Baskılı Kupa', 'Fotoğraf Baskısı'].map((item) => (
-                <li key={item} style={{ marginBottom: '8px' }}>
-                  <a
-                    href="#urunler"
-                    className="font-sans"
-                    data-cursor="expand"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: '0.85rem',
-                      color: '#6B6B6B',
-                      textDecoration: 'none',
-                      transition: 'color 0.3s',
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.color = '#F5F3EE';
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.color = '#6B6B6B';
-                    }}
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-[#1A1A1A] mb-6">
+              LOKASYON
+            </h4>
+            <div className="flex items-start gap-3 text-[#6B6B6B]">
+              <MapPin size={20} className="shrink-0" />
+              <p className="text-sm">
+                Kağıthane, İstanbul<br />
+                Türkiye
+              </p>
+            </div>
           </div>
 
-          <div className="footer-col">
-            <p
-              className="font-sans"
-              style={{
-                fontWeight: 500,
-                fontSize: '0.75rem',
-                color: '#F5F3EE',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                marginBottom: '16px',
-              }}
-            >
-              İletişim
-            </p>
-            <a
-              href="mailto:monowearstudiobusiness@gmail.com"
-              className="font-sans"
-              data-cursor="expand"
-              style={{
-                fontWeight: 400,
-                fontSize: '0.85rem',
-                color: '#6B6B6B',
-                textDecoration: 'none',
-                transition: 'color 0.3s',
-                display: 'block'
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = '#F5F3EE';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = '#6B6B6B';
-              }}
-            >
-              BİZE E-MAIL ÜZERİNDEN ULAŞMAK İÇİN TIKLA!
-            </a>
-          </div>
         </div>
 
-        <div
-          style={{
-            marginTop: '60px',
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-            paddingTop: '24px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '16px',
-          }}
-        >
-          <p
-            className="font-sans"
-            style={{
-              fontWeight: 400,
-              fontSize: '0.75rem',
-              color: '#6B6B6B',
-            }}
-          >
-            © 2026 MONOWEAR BASKI EVİ. Tüm hakları saklıdır.
+        {/* Bottom Copyright */}
+        <div className="mt-20 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-gray-400">
+            © 2026 MONO WEAR. Tüm hakları saklıdır.
           </p>
-          
-         <a
-  href="https://www.instagram.com/monowearstudio/"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    color: '#FF3B5C', /* This makes it a bright reddish-pink */
-    textDecoration: 'none',
-    fontWeight: 'bold',
-    fontSize: '1rem'
-  }}
->
-  <Instagram size={20} />
-  <span>INSTAGRAM'DA TAKİP ET</span>
-</a>
+          <div className="flex gap-6 text-xs text-gray-400">
+            <a href="#" className="hover:text-black">Gizlilik Politikası</a>
+            <a href="#" className="hover:text-black">Kullanım Şartları</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
