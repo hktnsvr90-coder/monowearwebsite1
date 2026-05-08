@@ -185,7 +185,7 @@ export default function Footer() {
                 (e.currentTarget as HTMLAnchorElement).style.color = '#6B6B6B';
               }}
             >
-              info@turkbaskievi.com
+              monowearstudiobusiness@gmail.com
             </a>
           </div>
         </div>
