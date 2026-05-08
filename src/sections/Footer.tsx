@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Instagram, Mail, MapPin } from 'lucide-react';
+import { Instagram, Mail, MapPin, MessageCircle } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -35,11 +35,25 @@ export default function Footer() {
       ref={footerRef}
       className="w-full py-20 px-6 md:px-16"
       style={{
-        background: '#FFFFFF', // FORCED WHITE BACKGROUND
+        background: '#FFFFFF',
         borderTop: '1px solid #E5E5E5',
       }}
     >
       <div className="max-w-7xl mx-auto">
+        
+        {/* WHATSAPP SİPARİŞ BUTONU (ORTADA) */}
+        <div className="flex justify-center mb-20 footer-col">
+          <a 
+            href="https://wa.me/905525767284?text=Merhaba,%20sipariş%20vermek%20istiyorum." 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 bg-[#1A1A1A] text-white px-10 py-5 font-bold tracking-widest hover:bg-[#25D366] transition-all hover:scale-105 active:scale-95 shadow-xl"
+          >
+            <MessageCircle size={22} />
+            SİPARİŞ VER
+          </a>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           
           {/* Brand Column */}
@@ -59,7 +73,6 @@ export default function Footer() {
               BİZE ULAŞIN
             </h4>
             <div className="flex flex-col gap-4">
-              {/* INSTAGRAM BUTTON */}
               <a
                 href="https://www.instagram.com/monowearstudio/"
                 target="_blank"
@@ -72,7 +85,6 @@ export default function Footer() {
                 <span className="font-medium text-sm">@monowearstudio</span>
               </a>
 
-              {/* EMAIL BUTTON */}
               <a
                 href="mailto:monowearstudiobusiness@gmail.com"
                 className="flex items-center gap-3 text-[#1A1A1A] hover:text-blue-500 transition-all group"
